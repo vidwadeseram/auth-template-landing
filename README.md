@@ -73,7 +73,7 @@ npm start
 ```
 src/
 ├── app/
-│   ├── (auth)/
+│   ├── (meta)/
 │   │   ├── login/page.tsx         # Login form
 │   │   ├── register/page.tsx      # Registration form
 │   │   ├── forgot-password/       # Password reset request

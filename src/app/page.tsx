@@ -89,7 +89,7 @@ export default function Home() {
       {/* Footer */}
       <footer className="border-t py-8">
         <div className="container mx-auto px-4 flex justify-between items-center">
-          <p className="text-sm text-muted-foreground">© 2026 Auth Template. MIT License.</p>
+          <p className="text-sm text-muted-foreground">© {new Date().getFullYear()} Auth Template. MIT License.</p>
           <a href="https://github.com/vidwadeseram" className="text-sm text-muted-foreground hover:text-foreground">GitHub</a>
         </div>
       </footer>
