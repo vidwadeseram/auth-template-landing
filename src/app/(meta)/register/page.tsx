@@ -15,18 +15,22 @@ export default function RegisterPage() {
   const router = useRouter();
   const [form, setForm] = useState({ first_name: "", last_name: "", email: "", password: "" });
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   function update(key: string, value: string) { setForm((f) => ({ ...f, [key]: value })); }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
+    setError(null);
     try {
       await register(form);
       toast.success("Registration successful! Check your email to verify.");
       router.push("/login");
     } catch (err: unknown) {
-      toast.error((err instanceof Error ? err.message : null) || "Registration failed");
+      const message = (err instanceof Error ? err.message : null) || "Registration failed";
+      setError(message);
+      toast.error(message);
     } finally {
       setLoading(false);
     }
@@ -41,23 +45,64 @@ export default function RegisterPage() {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
+            <div aria-live="polite" className="sr-only">
+              {error && `Error: ${error}`}
+            </div>
+            {error && (
+              <div id="form-error" className="text-sm font-medium text-destructive">
+                {error}
+              </div>
+            )}
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="first_name">First name</Label>
-                <Input id="first_name" value={form.first_name} onChange={(e) => update("first_name", e.target.value)} required />
+                <Input 
+                  id="first_name" 
+                  value={form.first_name} 
+                  onChange={(e) => update("first_name", e.target.value)} 
+                  required 
+                  aria-invalid={!!error}
+                  aria-describedby={error ? "form-error" : undefined}
+                />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="last_name">Last name</Label>
-                <Input id="last_name" value={form.last_name} onChange={(e) => update("last_name", e.target.value)} required />
+                <Input 
+                  id="last_name" 
+                  value={form.last_name} 
+                  onChange={(e) => update("last_name", e.target.value)} 
+                  required 
+                  aria-invalid={!!error}
+                  aria-describedby={error ? "form-error" : undefined}
+                />
               </div>
             </div>
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" placeholder="you@example.com" value={form.email} onChange={(e) => update("email", e.target.value)} required />
+              <Input 
+                id="email" 
+                type="email" 
+                placeholder="you@example.com" 
+                value={form.email} 
+                onChange={(e) => update("email", e.target.value)} 
+                required 
+                aria-invalid={!!error}
+                aria-describedby={error ? "form-error" : undefined}
+              />
             </div>
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
-              <Input id="password" type="password" placeholder="••••••••" value={form.password} onChange={(e) => update("password", e.target.value)} required minLength={8} />
+              <Input 
+                id="password" 
+                type="password" 
+                placeholder="••••••••" 
+                value={form.password} 
+                onChange={(e) => update("password", e.target.value)} 
+                required 
+                minLength={8} 
+                aria-invalid={!!error}
+                aria-describedby={error ? "form-error" : undefined}
+              />
             </div>
             <Button type="submit" className="w-full" disabled={loading}>{loading ? "Creating..." : "Create account"}</Button>
           </form>

@@ -16,7 +16,7 @@ export function Nav() {
           <Link href="/#pricing" className="text-sm text-muted-foreground hover:text-foreground">Pricing</Link>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="ghost" size="sm" onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
+          <Button variant="ghost" size="sm" onClick={() => setTheme(theme === "dark" ? "light" : "dark")} aria-label="Toggle theme">
             {theme === "dark" ? "☀️" : "🌙"}
           </Button>
           <Link href="/login"><Button variant="ghost" size="sm">Login</Button></Link>

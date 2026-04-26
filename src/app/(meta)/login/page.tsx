@@ -16,16 +16,20 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
+    setError(null);
     try {
       await login(email, password);
       toast.success("Logged in successfully");
       router.push("/");
     } catch (err: unknown) {
-      toast.error((err instanceof Error ? err.message : null) || "Login failed");
+      const message = (err instanceof Error ? err.message : null) || "Login failed";
+      setError(message);
+      toast.error(message);
     } finally {
       setLoading(false);
     }
@@ -40,13 +44,39 @@ export default function LoginPage() {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
+            <div aria-live="polite" className="sr-only">
+              {error && `Error: ${error}`}
+            </div>
+            {error && (
+              <div id="form-error" className="text-sm font-medium text-destructive">
+                {error}
+              </div>
+            )}
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
+              <Input 
+                id="email" 
+                type="email" 
+                placeholder="you@example.com" 
+                value={email} 
+                onChange={(e) => setEmail(e.target.value)} 
+                required 
+                aria-invalid={!!error}
+                aria-describedby={error ? "form-error" : undefined}
+              />
             </div>
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
-              <Input id="password" type="password" placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} required />
+              <Input 
+                id="password" 
+                type="password" 
+                placeholder="••••••••" 
+                value={password} 
+                onChange={(e) => setPassword(e.target.value)} 
+                required 
+                aria-invalid={!!error}
+                aria-describedby={error ? "form-error" : undefined}
+              />
             </div>
             <Button type="submit" className="w-full" disabled={loading}>{loading ? "Signing in..." : "Sign in"}</Button>
           </form>
