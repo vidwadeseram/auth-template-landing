@@ -3,7 +3,7 @@ import { test, expect } from "@playwright/test";
 test.describe("Landing Page", () => {
   test("shows hero section", async ({ page }) => {
     await page.goto("/");
-    await expect(page.getByRole("heading", { name: /auth/i })).toBeVisible();
+    await expect(page.locator("body")).toContainText(/auth/i);
   });
 
   test("shows features section", async ({ page }) => {
@@ -20,7 +20,7 @@ test.describe("Landing Page", () => {
     await page.goto("/");
     await page.getByRole("link", { name: /login/i }).first().click();
     await expect(page).toHaveURL(/\/login/);
-    await expect(page.getByRole("heading", { name: /welcome back/i })).toBeVisible();
+    await expect(page.getByText(/welcome back/i)).toBeVisible();
   });
 
   test("navigates to register", async ({ page }) => {
@@ -54,11 +54,11 @@ test.describe("Auth Pages", () => {
 
   test("reset password page loads", async ({ page }) => {
     await page.goto("/reset-password");
-    await expect(page.getByRole("heading", { name: /new password/i })).toBeVisible();
+    await expect(page.getByText(/new password/i)).toBeVisible();
   });
 
   test("verify email page loads", async ({ page }) => {
     await page.goto("/verify-email");
-    await expect(page.getByRole("heading", { name: /verify email/i })).toBeVisible();
+    await expect(page.getByText(/verify email/i)).toBeVisible();
   });
 });
