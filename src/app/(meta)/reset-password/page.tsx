@@ -13,7 +13,8 @@ import { toast } from "sonner";
 function ResetPasswordForm() {
   const { resetPassword } = useAuth();
   const params = useSearchParams();
-  const token = params.get("token") || "";
+  const urlToken = params.get("token") || "";
+  const [token, setToken] = useState(urlToken);
   const [password, setPassword] = useState("");
   const [done, setDone] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -47,10 +48,10 @@ function ResetPasswordForm() {
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
-              {!token && (
+              {!urlToken && (
                 <div className="space-y-2">
                   <Label htmlFor="token">Reset token</Label>
-                  <Input id="token" value={token} onChange={() => {}} placeholder="Enter token from email" required />
+                  <Input id="token" value={token} onChange={(e) => setToken(e.target.value)} placeholder="Enter token from email" required />
                 </div>
               )}
               <div className="space-y-2">
