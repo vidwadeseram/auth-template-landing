@@ -26,8 +26,8 @@ function ResetPasswordForm() {
       await resetPassword(token, password);
       setDone(true);
       toast.success("Password reset successfully!");
-    } catch (err: any) {
-      toast.error(err.message || "Reset failed");
+    } catch (err: unknown) {
+      toast.error((err instanceof Error ? err.message : null) || "Reset failed");
     } finally {
       setLoading(false);
     }
