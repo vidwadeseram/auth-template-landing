@@ -8,19 +8,19 @@ test.describe("Landing Page", () => {
 
   test("shows features section", async ({ page }) => {
     await page.goto("/");
-    await expect(page.getByText("Features")).toBeVisible();
+    await expect(page.getByText("Features").first()).toBeVisible();
   });
 
   test("shows pricing section", async ({ page }) => {
     await page.goto("/");
-    await expect(page.getByText("Pricing")).toBeVisible();
+    await expect(page.getByText("Pricing").first()).toBeVisible();
   });
 
   test("navigates to login", async ({ page }) => {
     await page.goto("/");
     await page.getByRole("link", { name: /login/i }).first().click();
     await expect(page).toHaveURL(/\/login/);
-    await expect(page.getByText(/welcome back/i)).toBeVisible();
+    await expect(page.getByText(/welcome back/i).first()).toBeVisible();
   });
 
   test("navigates to register", async ({ page }) => {
@@ -54,11 +54,11 @@ test.describe("Auth Pages", () => {
 
   test("reset password page loads", async ({ page }) => {
     await page.goto("/reset-password");
-    await expect(page.getByText(/new password/i)).toBeVisible();
+    await expect(page.getByText(/new password/i).first()).toBeVisible();
   });
 
   test("verify email page loads", async ({ page }) => {
     await page.goto("/verify-email");
-    await expect(page.getByText(/verify email/i)).toBeVisible();
+    await expect(page.getByText(/verify email/i).first()).toBeVisible();
   });
 });
